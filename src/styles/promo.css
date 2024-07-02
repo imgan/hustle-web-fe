@@ -1,0 +1,125 @@
+.promo{
+    height: 100%;
+    position: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.promo .box{
+    max-width: calc(100% - 20px);
+    margin: auto;
+}
+.promo .s-3247{
+    font-size: 32px;
+    line-height: 47px;
+}
+.promo .s-3653{
+    font-size: 36px;
+    line-height: 53px;
+}
+.promo .col-4 img{
+    min-height: 40px;
+    min-width: 100px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+.promo .mb-100{
+    margin-bottom: 100px;
+}
+.text-justify{
+    text-align: justify;
+}
+.promo .mb-33{
+    margin-bottom: 33px;
+}
+.promo .mb-30{
+    margin-bottom: 33px;
+}
+.promo .apps img{
+    width: 117px;
+    height: 33px;
+    margin: 0px 10px;
+}
+.box-popup-promo.active{
+    visibility: visible;
+    opacity: 1;
+    position: fixed;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, .4);
+}
+.box-popup-promo{
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    position: absolute;
+    z-index: 0;
+    left: 0px;
+    transition: all .5s ease-in-out;
+    animation: popup 0.7s;
+    visibility: hidden;
+    opacity: 0;
+}
+.popup-promo{
+    width: 347px;
+    height: fit-content;
+    padding: 14px;
+    box-sizing: border-box;
+    background-color: #181818;
+    border-radius: 20px;
+}
+.box-popup-promo.active p, .box-popup-promo.active img{
+    display: flex;
+}
+.box-popup-promo p, .box-popup-promo img{
+    display: none;
+}
+.popup-promo .md-logo{
+    width: 200px;
+    height: 45px;
+    object-fit: contain;
+}
+.popup-promo .top img{
+    object-fit: contain;
+}
+.popup-promo .top .cl-2{
+    height: 64px;
+}
+.popup-promo .top .cl-1{
+    width: 30px;
+    height: 30px;
+}
+.popup-promo .desc{
+    margin: 28px 0px 22px;
+    font-size: 14px;
+    line-height: 18px;
+}
+.popup-promo .card-promo{
+    background-size: contain;
+    max-width: 319px;
+    height: 105px;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+    padding: 20px 28px;
+}
+.popup-promo .card-promo .s-2021{
+    font-size: 20px;
+    line-height: 21px;
+    margin-bottom: 8px;
+}
+.s-1213{
+    font-size: 12px;
+    line-height: 13px;
+    color: #6D6D6D;
+}
+.popup-promo .icon-popup{
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+}
+.mb4{
+    margin-bottom: 4px;
+}
+.op-0{opacity: 0;}

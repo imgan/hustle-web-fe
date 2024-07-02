@@ -1,0 +1,27 @@
+.hover-text {
+  background-color: #DAFF3C;
+  color: #000 !important;
+  transition: 0.3s;
+}
+
+.bg-image:hover .hover-text {
+  background-color: #000;
+  color: #DAFF3C !important;
+}
+
+.ribbon {
+  padding-left: 15px;
+  position: absolute;
+  left: -8px;
+  background: #DAFF3C;
+}
+.ribbon:before {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: -8.5px;
+  left: 0.1px;
+  border-bottom: 8.5px solid #859C00;
+  border-left: 8px solid transparent;
+}

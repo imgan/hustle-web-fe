@@ -1,0 +1,78 @@
+image: node:18.16
+
+definitions:
+  services:
+    docker-with-large-memory:
+      memory: 5120
+      type: docker
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Install Modules and Build Site
+          script:
+            - npm install
+            - CI=false npm run build
+            - yarn install
+          artifacts:
+            - build/**
+          size: 2x
+          services: [docker-with-large-memory]
+
+      - step:
+          name: Build Docker Image and Push to Private Docker Repository
+          services:
+            - docker
+          script:
+            - docker build -t $REGISTRY_NAME/$DOCKER_USERNAME/$IMAGE_NAME:prod-${BITBUCKET_COMMIT} .
+            - docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD $REGISTRY_NAME
+            - docker push $REGISTRY_NAME/$DOCKER_USERNAME/$IMAGE_NAME:prod-${BITBUCKET_COMMIT}
+
+      - step:
+          name: Deploy to Production
+          script:
+          - pipe: atlassian/ssh-run:0.4.0
+            variables:
+              SSH_USER: $SSH_USER_PROD
+              SERVER: $SERVER_PROD
+              PORT: $PORT_PROD
+              COMMAND: > 
+                   echo "Deploying to production..." &&
+                   cd /home/$SSH_USER_PROD/compose-file/$SERVER_NAME/$IMAGE_NAME && 
+                   docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD $REGISTRY_NAME &&
+                   COMMIT_HASH=prod-${BITBUCKET_COMMIT} docker-compose pull && 
+                   COMMIT_HASH=prod-${BITBUCKET_COMMIT} docker-compose up -d
+
+    development:
+      - step:
+          name: Install Modules and Build Site
+          script:
+            - yarn install
+            - CI=false yarn run build
+          artifacts:
+            - build/**
+
+      - step:
+          name: Build Docker Image and Push to Private Docker Repository
+          services:
+            - docker
+          script:
+            - docker build -t $REGISTRY_NAME/$DOCKER_USERNAME/$IMAGE_NAME:stg-${BITBUCKET_COMMIT} .
+            - docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD $REGISTRY_NAME
+            - docker push $REGISTRY_NAME/$DOCKER_USERNAME/$IMAGE_NAME:stg-${BITBUCKET_COMMIT}
+
+      - step:
+          name: Deploy to Staging
+          script:
+          - pipe: atlassian/ssh-run:0.4.0
+            variables:
+              SSH_USER: $SSH_USER_STG
+              SERVER: $SERVER_STG
+              PORT: $PORT_STG
+              COMMAND: > 
+                   echo "Deploying to staging..." &&
+                   cd /home/$SSH_USER_STG/compose-file/$SERVER_NAME/$IMAGE_NAME && 
+                   docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD $REGISTRY_NAME &&
+                   COMMIT_HASH=stg-${BITBUCKET_COMMIT} docker-compose pull && 
+                   COMMIT_HASH=stg-${BITBUCKET_COMMIT} docker-compose up -d
